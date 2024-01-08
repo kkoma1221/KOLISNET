@@ -23,6 +23,7 @@ import SubNoticeUpdateComponent from "./wrap/sub/SubNoticeUpdateComponent";
 import ConfirmModalComponent from './wrap/ConfirmModalComponent';
 import FooterComponent from './wrap/FooterComponent';
 import SubUserSIgnUpComponent from "./wrap/SubUserSIgnUpComponent";
+import PostcodeComponent from "./wrap/PostcodeComponent.jsx";
 import { useSelector, useDispatch } from "react-redux"; 
 import { adminSignIn } from "./reducer/adminSignIn";
 import { bookData } from "./reducer/bookData";
@@ -103,6 +104,9 @@ export default function WrapComponent(){
                 }
                 {
                     selector.SignUpModal.isSignUp && <SubUserSIgnUpComponent />
+                }
+                {
+                    selector.isAddress.isAddress && <PostcodeComponent />
                 }
                 </BrowserRouter>
         </div>
