@@ -4,6 +4,7 @@ import './scss/header.scss';
 import { useSelector, useDispatch } from "react-redux";
 import { searchData } from "../reducer/searchData";
 import { searchSort } from "../reducer/searchSort";
+import { SignUpModal } from "../reducer/isSignUpModal";
 
 export default  function HeaderComponent(){
 
@@ -184,6 +185,13 @@ export default  function HeaderComponent(){
         }
     }
 
+    const onClickSignUp=(e)=>{
+        e.preventDefault();
+        dispatch(SignUpModal(true));
+        const htmlEl = document.getElementsByTagName('html')[0];
+        htmlEl.classList.add('on');
+    }
+
     return(
         <>
             <header id="header">
@@ -206,7 +214,7 @@ export default  function HeaderComponent(){
                                         selector.adminSignIn.관리자로그인정보 === null && (
                                             <ul>
                                                 <li><a href="!#"><img src="./images/header/img_login.png" alt="" /><span>로그인</span></a></li>
-                                                <li><a href="!#"><img src="./images/header/img_join.png" alt="" /><span>회원가입</span></a></li>
+                                                <li><a href="!#" onClick={onClickSignUp}><img src="./images/header/img_join.png" alt="" /><span>회원가입</span></a></li>
                                                 <li><Link to="/cart"><img src="./images/header/img_basket.png" alt="" /><span>바구니</span></Link></li>
                                             </ul>
                                         )

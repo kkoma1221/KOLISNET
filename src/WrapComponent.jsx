@@ -22,6 +22,7 @@ import SubNoticeViewComponent from "./wrap/sub/SubNoticeViewComponent";
 import SubNoticeUpdateComponent from "./wrap/sub/SubNoticeUpdateComponent";
 import ConfirmModalComponent from './wrap/ConfirmModalComponent';
 import FooterComponent from './wrap/FooterComponent';
+import SubUserSIgnUpComponent from "./wrap/SubUserSIgnUpComponent";
 import { useSelector, useDispatch } from "react-redux"; 
 import { adminSignIn } from "./reducer/adminSignIn";
 import { bookData } from "./reducer/bookData";
@@ -99,6 +100,9 @@ export default function WrapComponent(){
                     <FooterComponent/>
                 {
                     selector.confirmModal.isConfirmModal && <ConfirmModalComponent />
+                }
+                {
+                    selector.SignUpModal.isSignUp && <SubUserSIgnUpComponent />
                 }
                 </BrowserRouter>
         </div>
