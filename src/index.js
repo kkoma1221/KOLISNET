@@ -13,6 +13,8 @@ import cart from './reducer/cart.js';
 import  SignUpModal  from './reducer/isSignUpModal.js';
 import address from './reducer/address.js';
 import isAddress from './reducer/isAddress.js';
+import SignInModal from './reducer/isSignInModal.js';
+import logInInfo from './reducer/userSignIn.js';
 
 let store = configureStore({
   reducer: {
@@ -25,7 +27,9 @@ let store = configureStore({
     cart,
     SignUpModal,
     address,
-    isAddress
+    isAddress,
+    SignInModal,
+    logInInfo
   }
 });
 

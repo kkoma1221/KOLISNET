@@ -278,6 +278,7 @@ export default function SubUserSIgnUpComponent(){
         formData.append('userType',state.userType)
         formData.append('userId',state.userId)
         formData.append('userPw',state.userPw1)
+        formData.append('userName',state.userName)
         formData.append('userBirth',state.userBirth)
         formData.append('userAddress',`${state.userAddress1}${state.userAddress2}${state.userAddress3}`)
         formData.append('userGender',state.userGender)
