@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import './scss/userSignUp.scss';
-import { SignUpModal } from '../reducer/isSignUpModal';
+import isSignUpModal, { SignUpModal } from '../reducer/isSignUpModal';
 import { isAddress } from '../reducer/isAddress';
 import { confirmModal } from '../reducer/confirmModal';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,11 +12,13 @@ export default function SubUserSIgnUpComponent(){
     const dispatch = useDispatch();
     const selector = useSelector((state)=>state);
     const [state, setState] = React.useState({
-        isSignUp1:false,
+        isSignUp1:true,
         isSignUp2:false,
-        isSignUp3:true,
-        isSignUp4:true,
-        isSignUp5:true,
+        agreed1:false,
+        agreed2:false,
+        isSignUp3:false,
+        isSignUp4:false,
+        isSignUp5:false,
         isEmail:false,
         userType:'',
         userId:'',
@@ -113,13 +115,10 @@ export default function SubUserSIgnUpComponent(){
         else{
             setState({
                 ...state,
-                isEmail:false
+                isEmail:false,
+                userEmail3:value
             })
         }
-        setState({
-            ...state,
-            userEmail3:value
-        })
     }
 
     const onChangeUserType=(e)=>{
@@ -254,6 +253,7 @@ export default function SubUserSIgnUpComponent(){
     const onChangeAddress=(e)=>{
         let {value} = e.target;
         setState({
+            ...state,
             userAddress3:value
         })
     }
@@ -310,6 +310,61 @@ export default function SubUserSIgnUpComponent(){
         })
     }
 
+    const onClickBtn1=(e)=>{
+        e.preventDefault();
+        setState({
+            ...state,
+            isSignUp1:false,
+            isSignUp2:true
+        })
+    }
+
+    const onChangeAgreed1=(e)=>{
+        let {value} = e.target
+        if(value==="동의합니다"){
+            setState({
+                ...state,
+                agreed1:true
+            })
+        }
+        else{
+            setState({
+                ...state,
+                agreed1:false
+            })
+        }
+    }
+    const onChangeAgreed2=(e)=>{
+        let {value} = e.target
+        if(value==="동의합니다"){
+            setState({
+                ...state,
+                agreed2:true
+            })
+        }
+        else{
+            setState({
+                ...state,
+                agreed2:false
+            })
+        }
+    }
+
+    const onClickDisagree=(e)=>{
+        e.preventDefault();
+        dispatch(isSignUpModal(false));
+    }
+    const onClickAgreement=(e)=>{
+        e.preventDefault();
+        if(state.agreed1===true && state.agreed2===true){
+            setState({
+                ...state,
+                isSignUp2:false,
+                isSignUp3:true
+            })
+        }
+    }
+
     return (
         <div id='SubUserSIgnUp'>
                 <div className="window-bar">
@@ -333,7 +388,7 @@ export default function SubUserSIgnUpComponent(){
                                     <h3>통합회원으로 가입하시면 국립중앙도서관에서 운영중인 <em>다양한 서비스를 하나의 아이디로 편리하게</em> 이용하실 수 있습니다.</h3>
                                 </div>
                                 <div className="button-box">
-                                    <button className='btn1'>내국인 가입</button>
+                                    <button className='btn1' onClick={onClickBtn1}>내국인 가입</button>
                                     <button className='btn2'>내국인 가입(장애인)</button>
                                     <button className='btn3'>외국인 가입(SIGN UP)</button>
                                 </div>
@@ -687,9 +742,9 @@ export default function SubUserSIgnUpComponent(){
                                             1. 본 약관은 2013년 12월 12일부터 적용됩니다.</span>
                                 </div>
                                 <div className="check-box">
-                                    <input type="checkbox" name='checkbox1-1' id='checkbox1-1' value={'동의합니다'}/>
+                                    <input type="radio" name='checkbox1-1' id='checkbox1-1' value={'동의합니다'} onChange={onChangeAgreed1}/>
                                     <label htmlFor="checkbox1-1"><em>(필수항목)</em>동의합니다</label>
-                                    <input type="checkbox" name='checkbox1-2' id='checkbox1-2' value={'동의 하지 않습니다.'}/>
+                                    <input type="radio" name='checkbox1-2' id='checkbox1-2' value={'동의 하지 않습니다.'} onChange={onChangeAgreed1}/>
                                     <label htmlFor="checkbox1-2">동의 하지 않습니다.</label>
                                 </div>
                             </div>
@@ -733,9 +788,9 @@ export default function SubUserSIgnUpComponent(){
                                             가입자는 개인정보 수집·이용에 대하여 거부할 수 있는 권리가 있습니다. 단, 이에 대한 동의를 거부할 경우, 회원가입이 불가능합니다.</span>
                                 </div>
                                 <div className="check-box">
-                                    <input type="checkbox" name='checkbox2-1' id='checkbox2-1' value={'동의합니다'}/>
+                                    <input type="radio" name='checkbox2-1' id='checkbox2-1' value={'동의합니다'} onChange={onChangeAgreed2}/>
                                     <label htmlFor="checkbox2-1"><em>(필수항목)</em>동의합니다</label>
-                                    <input type="checkbox" name='checkbox2-2' id='checkbox2-2' value={'동의 하지 않습니다.'}/>
+                                    <input type="radio" name='checkbox2-2' id='checkbox2-2' value={'동의 하지 않습니다.'} onChange={onChangeAgreed2}/>
                                     <label htmlFor="checkbox2-2">동의 하지 않습니다.</label>
                                 </div>
                             </div>
@@ -780,16 +835,16 @@ export default function SubUserSIgnUpComponent(){
                                             선택항목의 수집 동의를 거부하더라도 도서관 서비스를 이용할 수 있습니다. 단, 일부 서비스는 개인정보의 수집 및 이용 목적에 명시된 바에 따라, 해당 항목 수집에 동의하여야 이용 가능합니다.</span>
                                 </div>
                                 <div className="check-box">
-                                    <input type="checkbox" name='checkbox3-1' id='checkbox3-1' value={'동의합니다'}/>
+                                    <input type="radio" name='checkbox3-1' id='checkbox3-1' value={'동의합니다'}/>
                                     <label htmlFor="checkbox3-1">동의합니다</label>
-                                    <input type="checkbox" name='checkbox3-2' id='checkbox3-2' value={'동의 하지 않습니다.'}/>
+                                    <input type="radio" name='checkbox3-2' id='checkbox3-2' value={'동의 하지 않습니다.'}/>
                                     <label htmlFor="checkbox3-2">동의 하지 않습니다.</label>
                                 </div>
                             </div>
                             <div className="section5">
                                 <div className="button-box">
-                                    <button className='disagree'>동의 하지 않습니다</button>
-                                    <button className='agreement'>동의 합니다</button>
+                                    <button className='disagree' onClick={onClickDisagree}>동의 하지 않습니다</button>
+                                    <button className='agreement' onClick={onClickAgreement}>동의 합니다</button>
                                 </div>
                             </div>
                         </div>
