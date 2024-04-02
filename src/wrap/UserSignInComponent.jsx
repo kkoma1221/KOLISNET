@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { SignInModal } from '../reducer/isSignInModal';
+import { SignUpModal } from '../reducer/isSignUpModal';
 import { confirmModal } from '../reducer/confirmModal';
 import { logInInfo } from '../reducer/userSignIn';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,7 +15,10 @@ export default function UserSignInComponent(){
     const navigate = useNavigate();
     const [state, setState] = React.useState({
         userId:'',
-        userPw:''
+        userPw:'',
+        isSignin:true,
+        isIdSearch:false,
+        isPwSearch:false
     })
 
     const onClickSignModalClose=(e)=>{
@@ -86,7 +90,11 @@ export default function UserSignInComponent(){
             console.log(err);
         })
     }
-
+    const onClickSignUp=(e)=>{
+        e.preventDefault();
+        dispatch(SignUpModal(true));
+        dispatch(SignInModal(false));
+    }
     return (
         <>
         <div id='userSignIn'>
@@ -100,40 +108,52 @@ export default function UserSignInComponent(){
                     </div>
                 </div>
                 <div className="main">
-                    <form onSubmit={onSubmitLogIn} >
-                        <div className="section1">
-                            <div className="left">
-                                <div className="row1">
-                                    <h2>로그인</h2>
-                                    <input type="radio" id='userType' name='userType' value={'통합회원'} select/>
-                                    <label htmlFor="userType" >통합회원</label>
+                     {
+                        state.isSignin &&(
+                            <form onSubmit={onSubmitLogIn} >
+                                <div className="section1">
+                                    <div className="left">
+                                        <div className="row1">
+                                            <h2>로그인</h2>
+                                            <input type="radio" id='userType' name='userType' value={'통합회원'} select/>
+                                            <label htmlFor="userType" >통합회원</label>
+                                        </div>
+                                        <div className="row2">
+                                            <input type="text" id='userId' name='userId' value={state.userId} onChange={onChangeId}/>
+                                        </div>
+                                        <div className="row3">
+                                            <input type="password" id='userPw' name='userPw' value={state.userPw} onChange={onChangePw}/>
+                                        </div>
+                                        <div className="row4">
+                                            <input type="checkbox" id='idSave' name='idSave' value={'아이디 저장'}/>
+                                            <label htmlFor="idSave">아이디 저장</label>
+                                        </div>
+                                        <div className="row5">
+                                            <button className='logIn'>로그인</button>
+                                        </div>
+                                        <div className="row6">
+                                            <a href="!#">아이디 찾기</a>
+                                            <p>|</p>
+                                            <a href="!#">비밀번호 찾기</a>
+                                            <p>|</p>
+                                            <a href="!#" onClick={onClickSignUp}>회원가입</a>
+                                        </div>
+                                    </div>
+                                    <div className="right">
+                                        <img src="/images/sub/signin/b00a206bfe66ea151b30e39fe5eac72b.png" alt="" />
+                                    </div>
                                 </div>
-                                <div className="row2">
-                                    <input type="text" id='userId' name='userId' value={state.userId} onChange={onChangeId}/>
-                                </div>
-                                <div className="row3">
-                                    <input type="password" id='userPw' name='userPw' value={state.userPw} onChange={onChangePw}/>
-                                </div>
-                                <div className="row4">
-                                    <input type="checkbox" id='idSave' name='idSave' value={'아이디 저장'}/>
-                                    <label htmlFor="idSave">아이디 저장</label>
-                                </div>
-                                <div className="row5">
-                                    <button className='logIn'>로그인</button>
-                                </div>
-                                <div className="row6">
-                                    <a href="!#">아이디 찾기</a>
-                                    <p>|</p>
-                                    <a href="!#">비밀번호 찾기</a>
-                                    <p>|</p>
-                                    <a href="!#">회원가입</a>
-                                </div>
-                            </div>
-                            <div className="right">
+                            </form>
+                        )
+                    }
+                    {
+                        state.isIdSearch && (
+                            <form action="">
+                                
+                            </form>
+                        )
+                    }
 
-                            </div>
-                        </div>
-                    </form>
                 </div>
                 <div className="foodter">
                     <div className="content">

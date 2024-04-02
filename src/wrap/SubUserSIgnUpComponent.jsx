@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import './scss/userSignUp.scss';
-import isSignUpModal, { SignUpModal } from '../reducer/isSignUpModal';
+import { SignUpModal } from '../reducer/isSignUpModal';
 import { isAddress } from '../reducer/isAddress';
 import { confirmModal } from '../reducer/confirmModal';
 import { useDispatch, useSelector } from 'react-redux';
@@ -76,12 +76,8 @@ export default function SubUserSIgnUpComponent(){
     const onChangeuserBirth=(e)=>{
         let {value} = e.target;
         const exp1=/[A-Za-zㄱ-ㅎㅏ-ㅣ가-힣]/g;
-        const exp2=/[0-9]{1,8}/g;
         if(exp1.test(value)===true){
             confirmModalMethod('숫자만 입력해 주세요');
-        }
-        else if(exp2.test(value)===false){
-            confirmModalMethod('8자리를 초과 할수 없습니다.');
         }
         else{
             setState({
@@ -93,8 +89,18 @@ export default function SubUserSIgnUpComponent(){
 
     const onClickCertification=(e)=>{
         e.preventDefault();
+        const exp2=/[0-9]{8}/g;
         if(state.userName==='' && state.userBirth===''){
-            confirmModalMethod('본인인증은 필수 입니다')
+            confirmModalMethod('이름과 생년월일을 입력하세요');
+        }
+        else if(state.userName===''){
+            confirmModalMethod('이름과 입력하세요');
+        }
+        else if(state.userBirth===''){
+            confirmModalMethod('생년월일을 입력하세요');
+        }
+        else if(exp2.test(state.userBirth)===false){
+            confirmModalMethod('생년월일 양식에 맞추어서 입력해주세요');
         }
         else{
             setState({
@@ -398,7 +404,9 @@ export default function SubUserSIgnUpComponent(){
 
     const onClickDisagree=(e)=>{
         e.preventDefault();
-        dispatch(isSignUpModal(false));
+        dispatch(SignUpModal(false));
+        const htmlEl = document.getElementsByTagName('html')[0];
+        htmlEl.classList.remove('on');
     }
     const onClickAgreement=(e)=>{
         e.preventDefault();
@@ -410,7 +418,7 @@ export default function SubUserSIgnUpComponent(){
             })
         }
         else{
-            alert('이름과 생년월일을 입력 해주세요')
+            confirmModalMethod('필수 동의사항을 체크하셔야 합니다');
         }
     }
 
